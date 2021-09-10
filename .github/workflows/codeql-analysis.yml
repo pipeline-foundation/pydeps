@@ -26,7 +26,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
         with:
-          # queries: security-and-quality
+          config-file: ./.github/codeql/codeql-config.yml
           languages: python
 
       - name: Perform CodeQL Analysis
