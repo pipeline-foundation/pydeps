@@ -69,6 +69,7 @@ README.html
 .pydeps~
 .lintscore6
 *.json
+!devcontainer.json
 source.jdb
 docs/.md5
 pydeps.svg
