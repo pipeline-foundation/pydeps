@@ -219,7 +219,7 @@ jobs:
           RELEASE_ASSETS="dist/pydeps-$PACKAGE_VERSION-py3-none-any.whl dist/pydeps-$PACKAGE_VERSION.tar.gz" # list the relative paths to the files separated by a single space
 
           gh release create $RELEASE_TAG \
-          --title $RELEASE_TITLE \
+          --title "$RELEASE_TITLE" \
           --notes "$RELEASE_NOTES" \
           $RELEASE_ASSETS
         env:
