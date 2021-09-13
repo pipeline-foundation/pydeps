@@ -13,7 +13,7 @@ jobs:
       should_deploy: ${{ steps.proj_ver_determiner.outputs.should_deploy }}
     strategy:
       matrix:
-        python-version: [2.7, 3.6, 3.7, 3.8, 3.9]
+        python-version: [ 2.7, 3.6, 3.7, 3.8, 3.9 ]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -37,7 +37,8 @@ jobs:
 
       # Information setup
 
-      - name: Pipeline data gatherer
+      - if: matrix.python-version == '3.9'
+        name: Pipeline data gatherer
         id: data_gatherer
         run: |
           # Get default branch
@@ -46,7 +47,8 @@ jobs:
 
           echo "::set-output name=default_branch::$(echo $DEFAULT_BRANCH)"
 
-      - name: Pipeline conditionals handler
+      - if: matrix.python-version == '3.9'
+        name: Pipeline conditionals handler
         id: conditionals_handler
         run: |
           DEFAULT_BRANCH="${{ steps.data_gatherer.outputs.default_branch }}"
@@ -71,7 +73,7 @@ jobs:
           echo "::set-output name=is_push::$(echo $IS_PUSH)"
           echo "::set-output name=is_push_to_default_branch::$(echo $IS_PUSH_TO_DEFAULT_BRANCH)"
 
-      - if: steps.conditionals_handler.outputs.is_push_to_default_branch == 'true'
+      - if: steps.conditionals_handler.outputs.is_push_to_default_branch == 'true' && matrix.python-version == '3.9'
         name: Project version/deploy determiner
         id: proj_ver_determiner
         run: |
