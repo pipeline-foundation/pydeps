@@ -81,7 +81,8 @@ jobs:
 
           PACKAGE_VERSION=$(cat setup.py \
             | grep version \
-            | sed 's/[version=", ]//g')
+            | head -1 \
+            | sed "s/[version=\', ]//g")
           PACKAGE_VERSION_TAG=`echo v$PACKAGE_VERSION | sed -e 's/[[:space:]]//'`
           LATEST_GITHUB_TAG=`echo $(git tag | sort --version-sort | tail -n1)`
           SHOULD_DEPLOY="false"
@@ -211,10 +212,10 @@ jobs:
           PACKAGE_VERSION="${{ needs.ci.outputs.package_version }}"
           RELEASE_TAG="${{ needs.ci.outputs.package_version_tag }}"
           PREVIOUS_TAG="${{ needs.ci.outputs.latest_github_tag }}"
-          RELEASE_TITLE="$RELEASE_TAG"
+          RELEASE_TITLE="Version $PACKAGE_VERSION"
           START_LINE=$(( $( grep -n "## $RELEASE_TAG" CHANGELOG.md | grep -Eo '^[^:]+' ) + 2 ))
           END_LINE=$(( $( grep -n "## $PREVIOUS_TAG" CHANGELOG.md | grep -Eo '^[^:]+' ) - 2 ))
-          RELEASE_NOTES=$(echo $'### Changelog:\n\n' "$( sed -n "$START_LINE,$END_LINE"p CHANGELOG.md )")
+          RELEASE_NOTES=$(echo "$( sed -n "$START_LINE,$END_LINE"p CHANGELOG.md )")
           RELEASE_ASSETS="dist/pydeps-$PACKAGE_VERSION-py3-none-any.whl dist/pydeps-$PACKAGE_VERSION.tar.gz" # list the relative paths to the files separated by a single space
 
           gh release create $RELEASE_TAG \
