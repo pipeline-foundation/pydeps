@@ -125,12 +125,14 @@ jobs:
           name: requirements-log
           path: "Python ${{ matrix.python-version }} - logs/requirements.log"
 
-      - name: Lint with flake8
+      - if: matrix.python-version == '3.9'
+        name: Lint with flake8
         run: |
           flake8 pydeps/** --max-line-length=199 2>&1 | tee "Python ${{ matrix.python-version }} - logs/flake8.log"
           exit ${PIPESTATUS[0]}
 
-      - name: Upload flake8 log as artifact
+      - if: matrix.python-version == '3.9'
+        name: Upload flake8 log as artifact
         uses: actions/upload-artifact@v2
         with:
           name: flake8-log
