@@ -23,7 +23,8 @@ jobs:
         run: |
           DOCKER_PASSWORD=${{ secrets.DOCKER_PASSWORD }}
 
-          echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER \
+          echo $DOCKER_PASSWORD | docker login \
+          --username $DOCKER_USER \
           --password-stdin
 
       - name: Build image
