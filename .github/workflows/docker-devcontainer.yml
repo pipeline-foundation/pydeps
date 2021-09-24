@@ -10,10 +10,10 @@ on:
 
 jobs:
   build-and-push:
-    name: Build and push
+    name: Build and push image
     runs-on: ubuntu-20.04
     env:
-      IMAGE_VERSION: '1.0.0'
+      IMAGE_TAG: '1.0.0'
       DOCKER_USER: ${{ secrets.DOCKER_USER }}
     steps:
       - name: Checkout repository
@@ -30,9 +30,9 @@ jobs:
         run: |
           docker build --no-cache \
           --progress=plain \
-          --tag $DOCKER_USER/pydeps-devcontainer:$IMAGE_VERSION \
-          --file docker-images/devcontainer/ .
+          --tag $DOCKER_USER/pydeps-devcontainer:$IMAGE_TAG \
+          --file docker-images/devcontainer/Dockerfile .
 
       - name: Push image to Docker Hub
         run: |
-          docker push $DOCKER_USER/pydeps-devcontainer:$IMAGE_VERSION
+          docker push $DOCKER_USER/pydeps-devcontainer:$IMAGE_TAG
